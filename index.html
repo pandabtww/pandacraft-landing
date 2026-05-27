@@ -1,245 +1,1871 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CreaThings — NeoForge 1.21.1</title>
-    <style>
-        /* Базовые стили и цвета в стиле Create (Медь и Темный индустриальный) */
-        :root {
-            --bg-color: #1e1e24;
-            --panel-color: #2a2a32;
-            --accent-color: #df8743; /* Медный/Оранжевый */
-            --accent-hover: #f0a469;
-            --text-color: #e2e2e2;
-            --text-muted: #a0a0a5;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PandaCraft — NeoForge 1.21.1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,400;0,600;0,700;0,900;1,400&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <style>
+    /* ============================================================
+       CSS VARIABLES & RESET
+    ============================================================ */
+    :root {
+      --bg-base:       #111215;
+      --bg-panel:      #17191d;
+      --bg-card:       #1c1f25;
+      --bg-card-hover: #22262f;
+      --copper:        #b5651d;
+      --copper-light:  #d4813a;
+      --gold:          #c9922a;
+      --amber:         #f0a030;
+      --amber-glow:    #ffb84d;
+      --neon:          #ff8c1a;
+      --neon-glow:     rgba(255,140,26,0.55);
+      --neon-subtle:   rgba(255,140,26,0.15);
+      --text-primary:  #e8e0d0;
+      --text-secondary:#9a9080;
+      --text-muted:    #5a5450;
+      --border:        rgba(181,101,29,0.25);
+      --border-strong: rgba(201,146,42,0.5);
+      --font-display:  'Exo 2', sans-serif;
+      --font-body:     'Rajdhani', sans-serif;
+      --radius:        6px;
+      --transition:    0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Шапка и Навигация */
-        header {
-            background-color: var(--panel-color);
-            border-bottom: 3px solid var(--accent-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    html { scroll-behavior: smooth; font-size: 16px; }
 
-        .nav-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-        }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+    /* Subtle noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
 
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-        }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
 
-        .nav-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            padding: 8px 16px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
 
-        .nav-btn:hover {
-            color: var(--text-color);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
+    /* Gear / rivet decorative SVG reusable */
+    .rivet {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--copper);
+      box-shadow: 0 0 4px var(--copper);
+      flex-shrink: 0;
+    }
 
-        .nav-btn.active {
-            color: var(--bg-color);
-            background-color: var(--accent-color);
-            font-weight: bold;
-        }
+    /* Section dividers */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+      margin: 0;
+    }
 
-        /* Главный контент */
-        main {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+    /* ============================================================
+       SCROLL ANIMATIONS
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.35s; }
+    .delay-4 { transition-delay: 0.5s; }
 
-        /* Секции (вкладки) */
-        .tab-content {
-            display: none; /* По умолчанию скрываем все */
-            background-color: var(--panel-color);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
+    /* ============================================================
+       HEADER
+    ============================================================ */
+    #header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      background: rgba(17,18,21,0.82);
+      backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+    #header.scrolled {
+      background: rgba(17,18,21,0.96);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.6), 0 1px 0 var(--border-strong);
+    }
+    #header .container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-        .tab-content.active {
-            display: block; /* Показываем только активную */
-            animation: fadeIn 0.3s ease;
-        }
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      color: var(--amber);
+      text-transform: uppercase;
+      text-shadow: 0 0 16px var(--neon-glow), 0 0 32px rgba(255,140,26,0.25);
+      user-select: none;
+    }
+    .logo svg {
+      flex-shrink: 0;
+    }
 
-        h2 {
-            color: var(--accent-color);
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-        }
+    /* Nav */
+    .nav-links {
+      display: flex;
+      gap: 0.2rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius);
+      position: relative;
+      transition: color var(--transition);
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 50%; right: 50%;
+      height: 2px;
+      background: var(--amber);
+      border-radius: 2px;
+      transition: left var(--transition), right var(--transition);
+      box-shadow: 0 0 6px var(--neon-glow);
+    }
+    .nav-links a:hover { color: var(--amber); }
+    .nav-links a:hover::after { left: 14px; right: 14px; }
 
-        p {
-            margin-bottom: 15px;
-        }
+    /* Burger */
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      background: none;
+      border: none;
+    }
+    .burger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--amber);
+      border-radius: 2px;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.active span:nth-child(2) { opacity: 0; }
+    .burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-        ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
+    /* Mobile nav drawer */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(17,18,21,0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-strong);
+      padding: 1rem 0 1.5rem;
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .mobile-nav.open {
+      display: flex;
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .mobile-nav a {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 0.65rem 2rem;
+      width: 100%;
+      text-align: center;
+      transition: color var(--transition), background var(--transition);
+    }
+    .mobile-nav a:hover { color: var(--amber); background: var(--neon-subtle); }
 
-        li {
-            margin-bottom: 8px;
-        }
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.75rem 1.75rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+      white-space: nowrap;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .btn:hover::before { transform: translateX(100%); }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
 
-        /* Кнопки и Интерактив */
-        .ip-box {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--bg-color);
-            padding: 10px 15px;
-            border-radius: 6px;
-            border: 1px dashed var(--accent-color);
-            margin: 15px 0;
-            cursor: pointer;
-        }
+    .btn-primary {
+      background: linear-gradient(135deg, #c97818 0%, #e8952a 50%, #f0a030 100%);
+      color: #0e0c08;
+      box-shadow: 0 4px 20px rgba(240,160,48,0.4), 0 1px 0 rgba(255,220,140,0.3) inset;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 8px 36px rgba(255,140,26,0.65), 0 1px 0 rgba(255,220,140,0.4) inset;
+    }
+    .btn-primary.copied {
+      background: linear-gradient(135deg, #2a7a2a 0%, #3da03d 100%);
+      box-shadow: 0 4px 20px rgba(60,160,60,0.5);
+    }
 
-        .ip-box:hover {
-            background-color: rgba(223, 135, 67, 0.1);
-        }
+    .btn-ghost {
+      background: transparent;
+      color: var(--amber);
+      border: 1.5px solid var(--border-strong);
+      box-shadow: 0 0 0 0 var(--neon-glow);
+    }
+    .btn-ghost:hover {
+      background: var(--neon-subtle);
+      border-color: var(--amber);
+      box-shadow: 0 0 20px var(--neon-glow), 0 0 40px rgba(255,140,26,0.15);
+    }
 
-        .download-btn {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            padding: 12px 24px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 6px;
-            margin-top: 15px;
-            transition: background 0.2s;
-        }
+    .btn-outline-sm {
+      background: transparent;
+      color: var(--copper-light);
+      border: 1.5px solid var(--copper);
+      padding: 0.55rem 1.2rem;
+      font-size: 0.78rem;
+      box-shadow: none;
+    }
+    .btn-outline-sm:hover {
+      background: rgba(181,101,29,0.15);
+      border-color: var(--copper-light);
+      box-shadow: 0 0 14px rgba(181,101,29,0.4);
+    }
 
-        .download-btn:hover {
-            background-color: var(--accent-hover);
-        }
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 96px 0 64px;
+      text-align: center;
+    }
 
-        /* Анимация появления */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    /* Animated grid background */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(181,101,29,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(181,101,29,0.07) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 75%);
+      animation: gridDrift 20s linear infinite;
+    }
+    @keyframes gridDrift {
+      0%   { background-position: 0 0; }
+      100% { background-position: 48px 48px; }
+    }
+
+    /* Radial glow */
+    .hero-glow {
+      position: absolute;
+      width: 700px; height: 700px;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse, rgba(201,146,42,0.12) 0%, rgba(255,140,26,0.05) 40%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Gear decorations */
+    .gear {
+      position: absolute;
+      opacity: 0.06;
+      animation: gearSpin linear infinite;
+      pointer-events: none;
+    }
+    .gear-1 { width: 320px; height: 320px; top: -80px; left: -100px; animation-duration: 60s; }
+    .gear-2 { width: 200px; height: 200px; bottom: 40px; right: -60px; animation-duration: 40s; animation-direction: reverse; }
+    .gear-3 { width: 140px; height: 140px; top: 30%; right: 8%; animation-duration: 50s; opacity: 0.04; }
+    @keyframes gearSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* Steam particles */
+    .steam-container {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 120px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .steam-particle {
+      position: absolute;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to top, var(--copper), transparent);
+      border-radius: 2px;
+      animation: steamRise linear infinite;
+      opacity: 0;
+    }
+    @keyframes steamRise {
+      0%   { transform: translateY(0) scaleX(1); opacity: 0; }
+      10%  { opacity: 0.6; }
+      80%  { opacity: 0.2; }
+      100% { transform: translateY(-100px) scaleX(2); opacity: 0; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(181,101,29,0.12);
+      border: 1px solid var(--border-strong);
+      color: var(--copper-light);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 8px var(--amber);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 4px var(--amber); }
+      50%       { box-shadow: 0 0 14px var(--neon), 0 0 28px var(--neon-glow); }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+    .hero-title span {
+      color: var(--amber);
+      text-shadow:
+        0 0 30px rgba(255,176,64,0.8),
+        0 0 60px rgba(255,140,26,0.5),
+        0 0 100px rgba(255,140,26,0.25);
+    }
+
+    /* Decorative lines beside title */
+    .hero-title-deco {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+    .hero-title-deco .line {
+      flex: 1;
+      max-width: 160px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-strong));
+    }
+    .hero-title-deco .line.right {
+      background: linear-gradient(90deg, var(--border-strong), transparent);
+    }
+    .hero-subtitle {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-ip-hint {
+      margin-top: 1.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      font-family: var(--font-display);
+    }
+    .hero-ip-hint code {
+      font-family: 'Courier New', monospace;
+      color: var(--copper-light);
+      background: rgba(181,101,29,0.1);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    /* ============================================================
+       HOW TO PLAY SECTION
+    ============================================================ */
+    #how-to-play {
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Standout background for this section */
+    #how-to-play::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, transparent 0%, rgba(181,101,29,0.04) 30%, rgba(201,146,42,0.06) 50%, rgba(181,101,29,0.04) 70%, transparent 100%);
+    }
+    #how-to-play::after {
+      content: '';
+      position: absolute;
+      left: -200px; top: 50%;
+      transform: translateY(-50%);
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,146,42,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--copper-light);
+      margin-bottom: 1rem;
+    }
+    .section-eyebrow::before,
+    .section-eyebrow::after {
+      content: '';
+      display: block;
+      width: 28px; height: 1px;
+      background: var(--copper);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+    .section-title em {
+      font-style: normal;
+      color: var(--amber);
+    }
+
+    .section-intro {
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin-bottom: 3.5rem;
+      font-size: 1.05rem;
+    }
+
+    /* Steps */
+    .steps-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Connector line between steps */
+    .steps-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 2.6rem;
+      left: calc(16.6% + 2rem);
+      right: calc(16.6% + 2rem);
+      height: 2px;
+      background: linear-gradient(90deg, var(--copper), var(--gold), var(--copper));
+      opacity: 0.4;
+      z-index: 0;
+    }
+
+    .step-card {
+      position: relative;
+      z-index: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem 1.75rem 1.75rem;
+      text-align: center;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .step-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 24px rgba(201,146,42,0.1);
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--copper) 0%, var(--gold) 100%);
+      box-shadow: 0 0 20px rgba(201,146,42,0.4), 0 0 40px rgba(201,146,42,0.15);
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.35rem;
+      color: #0e0c08;
+      margin: 0 auto 1.25rem;
+      position: relative;
+    }
+    .step-number::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,146,42,0.3);
+    }
+
+    .step-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+      color: var(--amber-glow);
+      margin-bottom: 0.65rem;
+      text-transform: uppercase;
+    }
+
+    .step-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ============================================================
+       ABOUT / FEATURES SECTION
+    ============================================================ */
+    #about {
+      padding: 100px 0;
+      background: var(--bg-panel);
+      position: relative;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--copper), var(--amber), var(--copper));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+    .feature-card:hover {
+      border-color: rgba(201,146,42,0.35);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(201,146,42,0.08);
+    }
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-icon-wrap {
+      width: 56px; height: 56px;
+      border-radius: 10px;
+      background: rgba(181,101,29,0.12);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1.25rem;
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+    .feature-card:hover .feature-icon-wrap {
+      background: rgba(201,146,42,0.18);
+      box-shadow: 0 0 16px rgba(201,146,42,0.25);
+    }
+
+    .feature-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+      color: var(--amber-glow);
+      margin-bottom: 0.6rem;
+    }
+
+    .feature-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .feature-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .feature-tag {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(181,101,29,0.12);
+      border: 1px solid var(--border);
+      color: var(--copper-light);
+    }
+
+    /* Server Status Widget */
+    .status-widget {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .status-widget::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(181,101,29,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .status-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .status-label {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .status-server-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text-primary);
+    }
+    .status-ip {
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: var(--copper-light);
+    }
+
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .status-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      flex-shrink: 0;
+      transition: background 0.5s;
+    }
+    .status-dot.online {
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80, 0 0 16px rgba(74,222,128,0.4);
+      animation: pulseGreen 2s infinite;
+    }
+    .status-dot.offline {
+      background: #f87171;
+      box-shadow: 0 0 8px #f87171;
+    }
+    @keyframes pulseGreen {
+      0%, 100% { box-shadow: 0 0 6px #4ade80; }
+      50%       { box-shadow: 0 0 14px #4ade80, 0 0 28px rgba(74,222,128,0.35); }
+    }
+    .status-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+    .status-text.online-text { color: #4ade80; }
+    .status-text.offline-text { color: #f87171; }
+    .status-text.loading-text {
+      color: var(--text-muted);
+      animation: loadingBlink 1.2s infinite;
+    }
+    @keyframes loadingBlink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .status-players {
+      text-align: center;
+    }
+    .players-count {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 2rem;
+      color: var(--amber);
+      line-height: 1;
+      text-shadow: 0 0 20px var(--neon-glow);
+    }
+    .players-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .status-version {
+      text-align: center;
+    }
+    .version-val {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--copper-light);
+    }
+    .version-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       CUSTOM RECIPES SECTION
+    ============================================================ */
+    #recipes {
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .recipes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .recipe-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .recipe-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 24px rgba(201,146,42,0.08);
+    }
+
+    .recipe-image-wrap {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--bg-panel);
+      overflow: hidden;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+    .recipe-image-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .recipe-card:hover .recipe-image-wrap img {
+      transform: scale(1.04);
+    }
+
+    /* Fallback placeholder when image fails */
+    .recipe-img-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-panel) 100%);
+    }
+    .recipe-img-fallback .craft-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      width: 90px;
+    }
+    .craft-cell {
+      width: 27px; height: 27px;
+      border-radius: 3px;
+      background: rgba(181,101,29,0.15);
+      border: 1px solid var(--border);
+    }
+    .craft-cell.filled {
+      background: rgba(201,146,42,0.3);
+      border-color: rgba(201,146,42,0.5);
+    }
+    .recipe-img-fallback span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      letter-spacing: 0.08em;
+    }
+
+    .recipe-body {
+      padding: 1.5rem;
+    }
+    .recipe-tag {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--copper-light);
+      background: rgba(181,101,29,0.12);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    .recipe-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .recipe-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .recipe-ingredients {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .ingredient-chip {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      background: rgba(17,18,21,0.8);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+    }
+
+    /* ============================================================
+       RULES SECTION
+    ============================================================ */
+    #rules {
+      padding: 80px 0;
+      background: var(--bg-panel);
+    }
+
+    .rules-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .accordion {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .accordion-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--bg-card);
+      transition: border-color var(--transition);
+    }
+    .accordion-item:hover {
+      border-color: rgba(181,101,29,0.35);
+    }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      transition: color var(--transition), background var(--transition);
+    }
+    .accordion-header:hover {
+      color: var(--amber);
+      background: rgba(181,101,29,0.05);
+    }
+    .accordion-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .accordion-num {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.7rem;
+      color: var(--copper);
+      background: rgba(181,101,29,0.1);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .accordion-arrow {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      color: var(--text-muted);
+      transition: transform var(--transition), color var(--transition);
+    }
+    .accordion-item.open .accordion-arrow {
+      transform: rotate(180deg);
+      color: var(--amber);
+    }
+    .accordion-item.open .accordion-header {
+      color: var(--amber);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .accordion-body-inner {
+      padding: 0 1.25rem 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .accordion-body-inner ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .accordion-body-inner li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+    .accordion-body-inner li::before {
+      content: '›';
+      color: var(--copper);
+      font-size: 1.1rem;
+      line-height: 1.4;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    #footer {
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      background: var(--bg-base);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--amber);
+      text-shadow: 0 0 12px var(--neon-glow);
+    }
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+    .footer-disclaimer {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      opacity: 0.7;
+      font-family: var(--font-display);
+      letter-spacing: 0.03em;
+      text-align: right;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .burger { display: flex; }
+      .steps-wrapper { grid-template-columns: 1fr; gap: 1rem; }
+      .steps-wrapper::before { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .recipes-grid { grid-template-columns: 1fr; }
+      .status-widget { flex-direction: column; align-items: flex-start; }
+      .status-right { width: 100%; justify-content: space-around; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-title { font-size: clamp(3rem, 16vw, 5rem); }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .footer-inner { flex-direction: column; text-align: center; align-items: center; }
+      .footer-disclaimer { text-align: center; }
+      #how-to-play, #about, #recipes, #rules { padding: 64px 0; }
+    }
+  </style>
 </head>
+
 <body>
 
-    <header>
-        <div class="nav-container">
-            <div class="logo">⚙️ CreaThings</div>
-            <nav class="nav-buttons">
-                <button class="nav-btn active" onclick="openTab('about', this)">Описание</button>
-                <button class="nav-btn" onclick="openTab('rules', this)">Правила</button>
-                <button class="nav-btn" onclick="openTab('how-to-play', this)">Как играть</button>
-            </nav>
+  <!-- ============================================================
+       HEADER
+  ============================================================ -->
+  <header id="header">
+    <div class="container">
+      <!-- Logo -->
+      <a href="#hero" class="logo" aria-label="PandaCraft">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <!-- Simplified gear/panda icon -->
+          <circle cx="14" cy="14" r="12" stroke="#c9922a" stroke-width="1.5" fill="none"/>
+          <circle cx="14" cy="14" r="6" fill="#c9922a" opacity="0.2"/>
+          <circle cx="14" cy="14" r="3" fill="#c9922a"/>
+          <!-- Gear teeth -->
+          <rect x="12.5" y="1" width="3" height="3.5" rx="1" fill="#c9922a"/>
+          <rect x="12.5" y="23.5" width="3" height="3.5" rx="1" fill="#c9922a"/>
+          <rect x="1" y="12.5" width="3.5" height="3" rx="1" fill="#c9922a"/>
+          <rect x="23.5" y="12.5" width="3.5" height="3" rx="1" fill="#c9922a"/>
+          <rect x="4.5" y="4.5" width="2.8" height="2.8" rx="0.8" fill="#c9922a" transform="rotate(45 5.9 5.9)"/>
+          <rect x="20.7" y="4.5" width="2.8" height="2.8" rx="0.8" fill="#c9922a" transform="rotate(45 22.1 5.9)"/>
+          <rect x="4.5" y="20.7" width="2.8" height="2.8" rx="0.8" fill="#c9922a" transform="rotate(45 5.9 22.1)"/>
+          <rect x="20.7" y="20.7" width="2.8" height="2.8" rx="0.8" fill="#c9922a" transform="rotate(45 22.1 22.1)"/>
+        </svg>
+        PandaCraft
+      </a>
+
+      <!-- Desktop nav -->
+      <nav aria-label="Основная навигация">
+        <ul class="nav-links">
+          <li><a href="#hero">Главная</a></li>
+          <li><a href="#how-to-play">Как играть</a></li>
+          <li><a href="#about">О сервере</a></li>
+          <li><a href="#recipes">Крафты</a></li>
+          <li><a href="#rules">Правила</a></li>
+        </ul>
+      </nav>
+
+      <!-- Burger button -->
+      <button class="burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Мобильное меню">
+    <a href="#hero"        onclick="closeMobileNav()">Главная</a>
+    <a href="#how-to-play" onclick="closeMobileNav()">Как играть</a>
+    <a href="#about"       onclick="closeMobileNav()">О сервере</a>
+    <a href="#recipes"     onclick="closeMobileNav()">Крафты</a>
+    <a href="#rules"       onclick="closeMobileNav()">Правила</a>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section id="hero" aria-label="Главная">
+    <!-- Background decorations -->
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+
+    <!-- Gear SVG decorations -->
+    <svg class="gear gear-1" viewBox="0 0 100 100" aria-hidden="true">
+      <use href="#gear-shape"/>
+    </svg>
+    <svg class="gear gear-2" viewBox="0 0 100 100" aria-hidden="true">
+      <use href="#gear-shape"/>
+    </svg>
+    <svg class="gear gear-3" viewBox="0 0 100 100" aria-hidden="true">
+      <use href="#gear-shape"/>
+    </svg>
+
+    <!-- Hidden SVG gear path definition -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <path id="gear-shape" d="M50 15 L55 5 L60 15 A40 40 0 0 1 75 22 L85 20 L88 30 L78 33 A40 40 0 0 1 85 50 L95 50 L93 61 L83 58 A40 40 0 0 1 75 78 L82 87 L73 93 L66 83 A40 40 0 0 1 50 85 L50 95 L40 95 L40 85 A40 40 0 0 1 25 78 L18 87 L9 80 L16 71 A40 40 0 0 1 8 50 L0 50 L0 39 L10 39 A40 40 0 0 1 17 22 L10 14 L18 7 L26 15 A40 40 0 0 1 40 8 L40 0 L55 0 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 0 0 50 35Z" fill="#c9922a"/>
+      </defs>
+    </svg>
+
+    <!-- Steam particles -->
+    <div class="steam-container" id="steamContainer" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge reveal" aria-label="Версия сервера">NeoForge 1.21.1</div>
+
+        <h1 class="hero-title reveal delay-1">
+          <span>Panda</span>Craft
+        </h1>
+
+        <div class="hero-title-deco reveal delay-1" aria-hidden="true">
+          <div class="line"></div>
+          <span class="hero-subtitle">Steampunk · Industrial · NeoForge</span>
+          <div class="line right"></div>
         </div>
-    </header>
 
-    <main>
-        <!-- ВКЛАДКА: ОПИСАНИЕ -->
-        <section id="about" class="tab-content active">
-            <h2>О сервере CreaThings</h2>
-            <p>Добро пожаловать на 12-й сезон нашего технического выживания! В этот раз мы собрали идеальный баланс инженерии и оптимизации на платформе <strong>NeoForge 1.21.1</strong>.</p>
-            <p>Основа сервера — мод <strong>Create</strong>. Стройте автоматизированные заводы, запускайте поезда и создавайте механизмы, которые будут работать на благо вашего поселения.</p>
-            <p>Нажмите на IP ниже, чтобы скопировать его:</p>
-            <div class="ip-box" onclick="copyIP('mc.creathings.ru')">
-                <span id="ip-text">📌 Кликни, чтобы скопировать IP: mc.creathings.ru</span>
+        <p class="hero-desc reveal delay-2">
+          Исследуй мир паровых механизмов, дирижаблей и промышленных фабрик.
+          Строй, автоматизируй и покоряй — вместе с сообществом единомышленников.
+        </p>
+
+        <div class="hero-buttons reveal delay-3">
+          <button class="btn btn-primary" id="copyIpBtn" aria-live="polite">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span id="copyIpText">Копировать IP</span>
+          </button>
+          <a href="https://discord.gg/sjkxZuUqT3" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            Вступить в Discord
+          </a>
+        </div>
+
+        <p class="hero-ip-hint reveal delay-4">
+          IP сервера:&nbsp;<code>play.pandacraft.fun</code>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================================
+       HOW TO PLAY
+  ============================================================ -->
+  <section id="how-to-play" aria-label="Как играть">
+    <div class="container">
+      <div class="section-eyebrow reveal">
+        Начало игры
+      </div>
+      <h2 class="section-title reveal delay-1">
+        Как <em>начать</em> играть
+      </h2>
+      <p class="section-intro reveal delay-2">
+        Всего три шага отделяют тебя от мира паровых машин и бесконечных приключений.
+      </p>
+
+      <div class="steps-wrapper">
+
+        <!-- Step 1 -->
+        <div class="step-card reveal delay-1">
+          <div class="step-number">1</div>
+          <span class="step-icon" aria-hidden="true">⚙️</span>
+          <h3 class="step-title">Установи лаунчер</h3>
+          <p class="step-desc">
+            Установи лаунчер с поддержкой <strong style="color:var(--copper-light)">NeoForge 1.21.1</strong> — например,
+            CurseForge, Prism Launcher или ATLauncher. Убедись, что выбрана правильная версия ядра.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card reveal delay-2">
+          <div class="step-number">2</div>
+          <span class="step-icon" aria-hidden="true">📦</span>
+          <h3 class="step-title">Скачай модпак</h3>
+          <p class="step-desc">
+            Загрузи наш фирменный модпак — в него уже включены все необходимые моды для игры.
+            Просто распакуй и импортируй в лаунчер.
+          </p>
+          <a href="#" class="btn btn-outline-sm" aria-label="Скачать сборку модпака">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Скачать сборку
+          </a>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card reveal delay-3">
+          <div class="step-number">3</div>
+          <span class="step-icon" aria-hidden="true">🚀</span>
+          <h3 class="step-title">Заходи на сервер</h3>
+          <p class="step-desc">
+            Скопируй IP-адрес <strong style="color:var(--copper-light)">play.pandacraft.fun</strong>,
+            добавь сервер в список Minecraft и заходи. Удачных приключений!
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================================
+       ABOUT / FEATURES
+  ============================================================ -->
+  <section id="about" aria-label="О сервере">
+    <div class="container">
+      <div class="section-eyebrow reveal">
+        Возможности
+      </div>
+      <h2 class="section-title reveal delay-1">
+        О <em>сервере</em>
+      </h2>
+      <p class="section-intro reveal delay-2">
+        PandaCraft — это хардкорный технический сервер на NeoForge 1.21.1, где механика встречается с творчеством.
+      </p>
+
+      <div class="features-grid">
+
+        <!-- Card 1: Create Aeronautics -->
+        <article class="feature-card reveal delay-1">
+          <div class="feature-icon-wrap" aria-hidden="true">🛸</div>
+          <h3 class="feature-title">Create Aeronautics</h3>
+          <p class="feature-desc">
+            Строй настоящие воздушные суда с физически корректной аэродинамикой.
+            Дирижабли, летающие острова и паровые аппараты тяжелее воздуха —
+            всё работает по законам физики.
+          </p>
+          <div class="feature-tags">
+            <span class="feature-tag">Дирижабли</span>
+            <span class="feature-tag">Физика</span>
+            <span class="feature-tag">Воздухоплавание</span>
+          </div>
+        </article>
+
+        <!-- Card 2: Train & Locomotion -->
+        <article class="feature-card reveal delay-2">
+          <div class="feature-icon-wrap" aria-hidden="true">🚂</div>
+          <h3 class="feature-title">Паровые поезда</h3>
+          <p class="feature-desc">
+            Полностью автоматизированные железнодорожные сети от Create: Locomotives.
+            Прокладывай рельсы, настраивай маршруты, доставляй ресурсы
+            между фабриками на другом конце карты.
+          </p>
+          <div class="feature-tags">
+            <span class="feature-tag">Логистика</span>
+            <span class="feature-tag">Автоматизация</span>
+            <span class="feature-tag">Поезда</span>
+          </div>
+        </article>
+
+        <!-- Card 3: Industrial Factories -->
+        <article class="feature-card reveal delay-3">
+          <div class="feature-icon-wrap" aria-hidden="true">🏭</div>
+          <h3 class="feature-title">Промышленные фабрики</h3>
+          <p class="feature-desc">
+            Возводи многоуровневые производственные комплексы: от простых прессов
+            до полностью автономных заводов по переработке руды, производству
+            сплавов и сборке деталей.
+          </p>
+          <div class="feature-tags">
+            <span class="feature-tag">Create</span>
+            <span class="feature-tag">Переработка</span>
+            <span class="feature-tag">Конвейеры</span>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Server Status Widget -->
+      <div class="status-widget reveal" role="region" aria-label="Статус сервера">
+        <div class="status-left">
+          <span class="status-label">Игровой сервер</span>
+          <div class="status-server-name">PandaCraft</div>
+          <div class="status-ip">play.pandacraft.fun</div>
+        </div>
+
+        <div class="status-right">
+          <!-- Online/Offline indicator -->
+          <div class="status-indicator" aria-live="polite" aria-atomic="true">
+            <div class="status-dot" id="statusDot" aria-hidden="true"></div>
+            <span class="status-text loading-text" id="statusText">Загрузка…</span>
+          </div>
+
+          <!-- Player count -->
+          <div class="status-players">
+            <div class="players-count" id="playerCount" aria-live="polite">—</div>
+            <div class="players-label">Игроков онлайн</div>
+          </div>
+
+          <!-- Version -->
+          <div class="status-version">
+            <div class="version-val">NeoForge 1.21.1</div>
+            <div class="version-label">Версия</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================================
+       CUSTOM RECIPES
+  ============================================================ -->
+  <section id="recipes" aria-label="Крафты">
+    <div class="container">
+      <div class="section-eyebrow reveal">
+        Эксклюзивно
+      </div>
+      <h2 class="section-title reveal delay-1">
+        Кастомные <em>крафты</em>
+      </h2>
+      <p class="section-intro reveal delay-2">
+        На нашем сервере доступны уникальные рецепты, которые упрощают ранний прогресс
+        и открывают новые пути развития.
+      </p>
+
+      <div class="recipes-grid">
+
+        <!-- Recipe Card 1 -->
+        <article class="recipe-card reveal delay-1">
+          <div class="recipe-image-wrap">
+            <img
+              src="craft1.webp"
+              alt="Крафт электронной лампы на раннем этапе"
+              loading="lazy"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            />
+            <!-- Fallback placeholder -->
+            <div class="recipe-img-fallback" style="display:none" aria-hidden="true">
+              <div class="craft-grid">
+                <div class="craft-cell filled"></div>
+                <div class="craft-cell"></div>
+                <div class="craft-cell filled"></div>
+                <div class="craft-cell"></div>
+                <div class="craft-cell filled"></div>
+                <div class="craft-cell"></div>
+                <div class="craft-cell filled"></div>
+                <div class="craft-cell"></div>
+                <div class="craft-cell filled"></div>
+              </div>
+              <span>Изображение рецепта</span>
             </div>
-        </section>
+          </div>
+          <div class="recipe-body">
+            <span class="recipe-tag">Ранняя игра</span>
+            <h3 class="recipe-title">Электронная лампа</h3>
+            <p class="recipe-desc">
+              Специальный рецепт позволяет создать электронные лампы уже в начале игры —
+              без необходимости добывать редкие ресурсы. Открывает ранний доступ
+              к электрической цепи Create.
+            </p>
+            <div class="recipe-ingredients">
+              <span class="ingredient-chip">Медный слиток ×4</span>
+              <span class="ingredient-chip">Стеклянный шар ×1</span>
+              <span class="ingredient-chip">Красная пыль ×2</span>
+              <span class="ingredient-chip">Железный прут ×2</span>
+            </div>
+          </div>
+        </article>
 
-        <!-- ВКЛАДКА: ПРАВИЛА -->
-        <section id="rules" class="tab-content">
-            <h2>Правила сервера</h2>
-            <p>У нас ламповое и доверительное комьюнити, поэтому правила простые:</p>
-            <ul>
-                <li><strong>Уважение:</strong> Не мешайте играть другим, не взрывайте чужие заводы без согласия.</li>
-                <li><strong>Оптимизация:</strong> Выключайте заводы и фермы модов, когда уходите в оффлайн (не злоупотребляйте чанклоадерами). Наш TPS скажет вам спасибо.</li>
-                <li><strong>Баги:</strong> Нашли баг/дюп? Сообщите админу в Дискорд и получите награду вместо бана.</li>
-            </ul>
-        </section>
+        <!-- Recipe Card 2 -->
+        <article class="recipe-card reveal delay-2">
+          <div class="recipe-image-wrap">
+            <img
+              src="craft2.webp"
+              alt="Крафт портативного парового котла"
+              loading="lazy"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            />
+            <!-- Fallback placeholder -->
+            <div class="recipe-img-fallback" style="display:none" aria-hidden="true">
+              <div class="craft-grid">
+                <div class="craft-cell"></div>
+                <div class="craft-cell filled"></div>
+                <div class="craft-cell"></div>
+                <div class="craft-cell filled"></div>
+                <div class="craft-cell filled"></div>
+                <div class="craft-cell filled"></div>
+                <div class="craft-cell"></div>
+                <div class="craft-cell filled"></div>
+                <div class="craft-cell"></div>
+              </div>
+              <span>Изображение рецепта</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <span class="recipe-tag">Средняя игра</span>
+            <h3 class="recipe-title">Портативный паровой котёл</h3>
+            <p class="recipe-desc">
+              Компактный котёл, который можно разместить в мобильной машине или
+              небольшой мастерской. Производит пар для привода механизмов Create
+              без необходимости строить полноразмерную котельную.
+            </p>
+            <div class="recipe-ingredients">
+              <span class="ingredient-chip">Чугунный корпус ×4</span>
+              <span class="ingredient-chip">Медная труба ×2</span>
+              <span class="ingredient-chip">Клапан ×1</span>
+              <span class="ingredient-chip">Огнеупорный кирпич ×2</span>
+            </div>
+          </div>
+        </article>
 
-        <!-- ВКЛАДКА: КАК ИГРАТЬ -->
-        <section id="how-to-play" class="tab-content">
-            <h2>Как начать играть</h2>
-            <p>Для захода на сервер вам понадобится чистая сборка модов.</p>
-            <ul>
-                <li>1. Скачайте лаунчер (например, Prism Launcher или CurseForge).</li>
-                <li>2. Установите версию <strong>NeoForge 1.21.1</strong>.</li>
-                <li>3. Скачайте наш архив с модами и распакуйте в папку <code>mods</code>.</li>
-            </ul>
-            <a href="#" class="download-btn">Скачать сборку (.zip)</a>
-        </section>
-    </main>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        // Логика переключения вкладок через JS
-        function openTab(tabId, button) {
-            // Скрываем все вкладки
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
+  <div class="section-divider"></div>
 
-            // Убираем активный класс у всех кнопок
-            const buttons = document.querySelectorAll('.nav-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
+  <!-- ============================================================
+       RULES SECTION
+  ============================================================ -->
+  <section id="rules" aria-label="Правила сервера">
+    <div class="container">
+      <div class="rules-header">
+        <div class="section-eyebrow reveal" style="justify-content:center">
+          Обязательно к прочтению
+        </div>
+        <h2 class="section-title reveal delay-1" style="text-align:center">
+          Правила <em>сервера</em>
+        </h2>
+        <p style="color:var(--text-secondary);max-width:500px;margin:0 auto;font-size:0.95rem;" class="reveal delay-2">
+          Соблюдение правил обеспечивает комфортную игру для всех.
+          Незнание правил не освобождает от ответственности.
+        </p>
+      </div>
 
-            // Показываем нужную вкладку и делаем кнопку активной
-            document.getElementById(tabId).classList.add('active');
-            button.classList.add('active');
+      <div class="accordion reveal delay-2" role="list" aria-label="Правила сервера">
+
+        <!-- Rule block 1 -->
+        <div class="accordion-item" role="listitem">
+          <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleAccordion(this)">
+            <div class="accordion-header-left">
+              <span class="accordion-num">01</span>
+              Общие правила поведения
+            </div>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <ul>
+                <li>Уважай всех участников сообщества, независимо от опыта и знаний.</li>
+                <li>Запрещены оскорбления, дискриминация и токсичное поведение в чате.</li>
+                <li>Реклама сторонних серверов и ресурсов строго запрещена.</li>
+                <li>Не злоупотребляй командами и механиками, создавая нагрузку на сервер.</li>
+                <li>Спамить в общем чате запрещено; уважай других игроков.</li>
+                <li>Используй русский или английский язык в общем чате.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rule block 2 -->
+        <div class="accordion-item" role="listitem">
+          <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleAccordion(this)">
+            <div class="accordion-header-left">
+              <span class="accordion-num">02</span>
+              Промышленный этикет
+            </div>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <ul>
+                <li>Не создавай конструкции, вызывающие лаги: бесконечные петли конвейеров, переполнение жидкостей и т. д.</li>
+                <li>Ограничивай количество постоянно активных машин — особенно на публичной территории.</li>
+                <li>Устанавливай чанклоадеры только в разумных количествах и по необходимости.</li>
+                <li>Не блокируй общие дороги и ресурсные зоны своими постройками.</li>
+                <li>Убирай временные тестовые конструкции после завершения экспериментов.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rule block 3 -->
+        <div class="accordion-item" role="listitem">
+          <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleAccordion(this)">
+            <div class="accordion-header-left">
+              <span class="accordion-num">03</span>
+              Политика в отношении гриферства
+            </div>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <ul>
+                <li>Гриферство (намеренное разрушение чужих построек) строго запрещено и влечёт бан.</li>
+                <li>Кража ресурсов из чужих сундуков без явного разрешения запрещена.</li>
+                <li>Не изменяй механизмы и конструкции других игроков без их ведома.</li>
+                <li>Убедись, что ты играешь в разрешённой зоне — уважай личную территорию других.</li>
+                <li>О любых нарушениях сообщай администрации через Discord или команду /report.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rule block 4 -->
+        <div class="accordion-item" role="listitem">
+          <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleAccordion(this)">
+            <div class="accordion-header-left">
+              <span class="accordion-num">04</span>
+              Читы и запрещённые моды
+            </div>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <ul>
+                <li>Запрещены читы, боты и любое ПО, дающее несправедливое преимущество.</li>
+                <li>Разрешены оптимизационные моды (OptiFine, Sodium, Iris) и клиентские HUD-моды.</li>
+                <li>Дюпы предметов запрещены; об обнаруженных дюп-багах следует сообщать администрации.</li>
+                <li>Использование X-Ray в любом виде (мод, текстурпак, читерский клиент) — бан.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer id="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">PandaCraft</div>
+        <div class="footer-copy">
+          © 2024–2025 PandaCraft. Все права защищены.
+        </div>
+        <div class="footer-disclaimer">
+          Не связан с Mojang Studios.
+          <br>Minecraft является торговой маркой Mojang AB.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    /* ── Header scroll effect ───────────────────────────── */
+    const header = document.getElementById('header');
+    const onScroll = () => {
+      header.classList.toggle('scrolled', window.scrollY > 20);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* ── Burger menu ────────────────────────────────────── */
+    const burgerBtn   = document.getElementById('burgerBtn');
+    const mobileNav   = document.getElementById('mobileNav');
+
+    burgerBtn.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('open');
+      burgerBtn.classList.toggle('active', isOpen);
+      burgerBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    function closeMobileNav() {
+      mobileNav.classList.remove('open');
+      burgerBtn.classList.remove('active');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    /* ── Copy IP button ─────────────────────────────────── */
+    const copyIpBtn  = document.getElementById('copyIpBtn');
+    const copyIpText = document.getElementById('copyIpText');
+
+    copyIpBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText('play.pandacraft.fun').then(() => {
+        copyIpBtn.classList.add('copied');
+        copyIpText.textContent = 'Скопировано!';
+        setTimeout(() => {
+          copyIpBtn.classList.remove('copied');
+          copyIpText.textContent = 'Копировать IP';
+        }, 2000);
+      }).catch(() => {
+        // Fallback for browsers without clipboard API
+        const ta = document.createElement('textarea');
+        ta.value = 'play.pandacraft.fun';
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        copyIpBtn.classList.add('copied');
+        copyIpText.textContent = 'Скопировано!';
+        setTimeout(() => {
+          copyIpBtn.classList.remove('copied');
+          copyIpText.textContent = 'Копировать IP';
+        }, 2000);
+      });
+    });
+
+    /* ── Scroll reveal ──────────────────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-        // Логика копирования IP в буфер обмена
-        function copyIP(ip) {
-            navigator.clipboard.writeText(ip).then(() => {
-                const ipText = document.getElementById('ip-text');
-                const originalText = ipText.innerText;
-                ipText.innerText = '✅ IP скопирован в буфер!';
-                ipText.style.color = '#df8743';
-                
-                setTimeout(() => {
-                    ipText.innerText = originalText;
-                    ipText.style.color = '#e2e2e2';
-                }, 2000);
-            });
+    revealEls.forEach(el => observer.observe(el));
+
+    /* ── Accordion ──────────────────────────────────────── */
+    function toggleAccordion(header) {
+      const item   = header.closest('.accordion-item');
+      const body   = item.querySelector('.accordion-body');
+      const isOpen = item.classList.toggle('open');
+
+      header.setAttribute('aria-expanded', String(isOpen));
+
+      if (isOpen) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+      } else {
+        body.style.maxHeight = '0';
+      }
+    }
+
+    // Keyboard support for accordion
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleAccordion(header);
         }
-    </script>
+      });
+    });
+
+    /* ── Steam particles ────────────────────────────────── */
+    (function initSteam() {
+      const container = document.getElementById('steamContainer');
+      if (!container) return;
+      const NUM_PARTICLES = 18;
+      for (let i = 0; i < NUM_PARTICLES; i++) {
+        const p = document.createElement('div');
+        p.className = 'steam-particle';
+        const left     = Math.random() * 100;
+        const height   = 40 + Math.random() * 70;
+        const duration = 3 + Math.random() * 5;
+        const delay    = Math.random() * 8;
+        p.style.left          = left + '%';
+        p.style.height        = height + 'px';
+        p.style.animationDuration  = duration + 's';
+        p.style.animationDelay     = delay + 's';
+        container.appendChild(p);
+      }
+    })();
+
+    /* ── Server Status API ──────────────────────────────── */
+    (async function fetchServerStatus() {
+      const dot         = document.getElementById('statusDot');
+      const statusText  = document.getElementById('statusText');
+      const playerCount = document.getElementById('playerCount');
+
+      try {
+        const res  = await fetch('https://api.mcsrvstat.us/2/play.pandacraft.fun', {
+          signal: AbortSignal.timeout(8000)
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        if (data && data.online) {
+          dot.className   = 'status-dot online';
+          statusText.className = 'status-text online-text';
+          statusText.textContent = 'Онлайн';
+
+          const cur = data.players?.online ?? 0;
+          const max = data.players?.max   ?? 50;
+          playerCount.textContent = cur + ' / ' + max;
+        } else {
+          dot.className   = 'status-dot offline';
+          statusText.className = 'status-text offline-text';
+          statusText.textContent = 'Офлайн';
+          playerCount.textContent = '0 / —';
+        }
+      } catch (err) {
+        dot.className   = 'status-dot offline';
+        statusText.className = 'status-text offline-text';
+        statusText.textContent = 'Недоступен';
+        playerCount.textContent = '— / —';
+        console.warn('Server status fetch failed:', err);
+      }
+    })();
+  </script>
+
 </body>
 </html>
