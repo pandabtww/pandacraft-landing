@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreaThings — NeoForge 1.21.1</title>
+    <style>
+        /* Базовые стили и цвета в стиле Create (Медь и Темный индустриальный) */
+        :root {
+            --bg-color: #1e1e24;
+            --panel-color: #2a2a32;
+            --accent-color: #df8743; /* Медный/Оранжевый */
+            --accent-hover: #f0a469;
+            --text-color: #e2e2e2;
+            --text-muted: #a0a0a5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Шапка и Навигация */
+        header {
+            background-color: var(--panel-color);
+            border-bottom: 3px solid var(--accent-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-color);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-btn.active {
+            color: var(--bg-color);
+            background-color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* Главный контент */
+        main {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Секции (вкладки) */
+        .tab-content {
+            display: none; /* По умолчанию скрываем все */
+            background-color: var(--panel-color);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .tab-content.active {
+            display: block; /* Показываем только активную */
+            animation: fadeIn 0.3s ease;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Кнопки и Интерактив */
+        .ip-box {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--bg-color);
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px dashed var(--accent-color);
+            margin: 15px 0;
+            cursor: pointer;
+        }
+
+        .ip-box:hover {
+            background-color: rgba(223, 135, 67, 0.1);
+        }
+
+        .download-btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">⚙️ CreaThings</div>
+            <nav class="nav-buttons">
+                <button class="nav-btn active" onclick="openTab('about', this)">Описание</button>
+                <button class="nav-btn" onclick="openTab('rules', this)">Правила</button>
+                <button class="nav-btn" onclick="openTab('how-to-play', this)">Как играть</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- ВКЛАДКА: ОПИСАНИЕ -->
+        <section id="about" class="tab-content active">
+            <h2>О сервере CreaThings</h2>
+            <p>Добро пожаловать на 12-й сезон нашего технического выживания! В этот раз мы собрали идеальный баланс инженерии и оптимизации на платформе <strong>NeoForge 1.21.1</strong>.</p>
+            <p>Основа сервера — мод <strong>Create</strong>. Стройте автоматизированные заводы, запускайте поезда и создавайте механизмы, которые будут работать на благо вашего поселения.</p>
+            <p>Нажмите на IP ниже, чтобы скопировать его:</p>
+            <div class="ip-box" onclick="copyIP('mc.creathings.ru')">
+                <span id="ip-text">📌 Кликни, чтобы скопировать IP: mc.creathings.ru</span>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА: ПРАВИЛА -->
+        <section id="rules" class="tab-content">
+            <h2>Правила сервера</h2>
+            <p>У нас ламповое и доверительное комьюнити, поэтому правила простые:</p>
+            <ul>
+                <li><strong>Уважение:</strong> Не мешайте играть другим, не взрывайте чужие заводы без согласия.</li>
+                <li><strong>Оптимизация:</strong> Выключайте заводы и фермы модов, когда уходите в оффлайн (не злоупотребляйте чанклоадерами). Наш TPS скажет вам спасибо.</li>
+                <li><strong>Баги:</strong> Нашли баг/дюп? Сообщите админу в Дискорд и получите награду вместо бана.</li>
+            </ul>
+        </section>
+
+        <!-- ВКЛАДКА: КАК ИГРАТЬ -->
+        <section id="how-to-play" class="tab-content">
+            <h2>Как начать играть</h2>
+            <p>Для захода на сервер вам понадобится чистая сборка модов.</p>
+            <ul>
+                <li>1. Скачайте лаунчер (например, Prism Launcher или CurseForge).</li>
+                <li>2. Установите версию <strong>NeoForge 1.21.1</strong>.</li>
+                <li>3. Скачайте наш архив с модами и распакуйте в папку <code>mods</code>.</li>
+            </ul>
+            <a href="#" class="download-btn">Скачать сборку (.zip)</a>
+        </section>
+    </main>
+
+    <script>
+        // Логика переключения вкладок через JS
+        function openTab(tabId, button) {
+            // Скрываем все вкладки
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Убираем активный класс у всех кнопок
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Показываем нужную вкладку и делаем кнопку активной
+            document.getElementById(tabId).classList.add('active');
+            button.classList.add('active');
+        }
+
+        // Логика копирования IP в буфер обмена
+        function copyIP(ip) {
+            navigator.clipboard.writeText(ip).then(() => {
+                const ipText = document.getElementById('ip-text');
+                const originalText = ipText.innerText;
+                ipText.innerText = '✅ IP скопирован в буфер!';
+                ipText.style.color = '#df8743';
+                
+                setTimeout(() => {
+                    ipText.innerText = originalText;
+                    ipText.style.color = '#e2e2e2';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
