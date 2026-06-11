@@ -1357,7 +1357,7 @@ button { font-family: var(--font); cursor: pointer; }
         <h3 class="step-title">Установи лаунчер</h3>
         <p class="step-desc">
           Скачай лаунчер с поддержкой <strong style="color:var(--amber-b);font-weight:600;">NeoForge 1.21.1</strong> —
-          Prism Launcher, ATLauncher или CurseForge. Убедись, что выбрана нужная версия ядра.
+          Legacy Launcher, Prism Launcher, Modrinth или CurseForge. Убедись, что выбрана нужная версия ядра.
         </p>
       </div>
 
@@ -1375,7 +1375,7 @@ button { font-family: var(--font); cursor: pointer; }
           Загрузи наш фирменный модпак — все необходимые моды уже включены.
           Импортируй в лаунчер одним кликом и запусти игру.
         </p>
-        <a href="https://mods.pandacraft.fun/" class="btn btn-ghost btn-sm" style="align-self:center;margin-top:auto;" aria-label="Скачать сборку модпака">
+        <a href="#" class="btn btn-ghost btn-sm" style="align-self:center;margin-top:auto;" aria-label="Скачать сборку модпака">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
@@ -1398,7 +1398,7 @@ button { font-family: var(--font); cursor: pointer; }
         <h3 class="step-title">Заходи на сервер</h3>
         <p class="step-desc">
           Нажми на адрес <strong style="color:var(--amber-b);font-weight:600;">play.pandacraft.fun</strong>
-          в строке статуса выше, добавь сервер в Minecraft и начинай приключение!
+          в строке статуса выше, добавь сервер в Minecraft, <a href="#faq" style="color:var(--amber-b);font-weight:600;">верифицируйся</a> и начинай приключение!
         </p>
       </div>
 
@@ -1445,7 +1445,7 @@ button { font-family: var(--font); cursor: pointer; }
           </svg>
         </div>
         <h3 class="feat-title">Паровые поезда</h3>
-        <p class="feat-desc">Автоматизированные железнодорожные сети от Create: Locomotives. Прокладывай маршруты и доставляй ресурсы между фабриками на другом конце карты.</p>
+        <p class="feat-desc">Автоматизированные железнодорожные сети от Create: Steam 'n' Rails. Прокладывай маршруты и доставляй ресурсы между фабриками на другом конце карты.</p>
         <div class="feat-tags">
           <span class="feat-tag">Логистика</span>
           <span class="feat-tag">Автоматизация</span>
@@ -1591,6 +1591,8 @@ button { font-family: var(--font); cursor: pointer; }
       <h2 class="sec-title reveal d1" style="text-align:center">Часто задаваемые <em>вопросы</em></h2>
       <p class="sec-intro reveal d2" style="text-align:center">
         Не нашёл ответа — загляни в Discord, там всегда готовы помочь.
+        Поддержка через Discord/Telegram — самый быстрый способ решить любые вопросы по установке, верификации и игре.
+        здесь ссылку на дискорд и телеграм типо, тех поддержка , и убрать мб дезинформационный текст выше мб
       </p>
     </div>
 
@@ -1598,24 +1600,48 @@ button { font-family: var(--font); cursor: pointer; }
 
       <div class="faq-item reveal d1">
         <div class="faq-hd" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)">
-          Как зарегистрироваться и начать играть?
+          Как установить сборку модов? <!-- Нужна пошаговая инструкция по установке и запуску. -->
           <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-body">
           <div class="faq-body-inner">
-            Вступи в наш <a href="https://discord.gg/sjkxZuUqT3" target="_blank" rel="noopener noreferrer">Discord-сервер</a> и пройди верификацию в специальном канале. После этого скачай модпак, подключи его к лаунчеру NeoForge 1.21.1 и заходи по IP <strong style="color:var(--amber-b)">play.pandacraft.fun</strong>.
+            Скачай сборку модов нашего сервера <a href="#" target="_blank" rel="noopener noreferrer">по этой ссылке</a>. Скопируй все папки из архива (кроме папки «Остальное») в корневую директорию игры (обычно это папка .minecraft или папка вашей сборки в лаунчере) и пройди верификацию на сервере (<a href="#" style="color:var(--tx-primary)">см. Как верифицироваться и начать играть?</a>).
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal d1">
+        <div class="faq-hd" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)">
+          Как верифицироваться и начать играть?
+          <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            <svg width="18" height="18" viewBox="0 0 127.14 96.36" fill="currentColor" style="color:var(--disc); vertical-align:middle;" aria-hidden="true">
+              <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+            </svg>
+            <span style="color:var(--disc)"><strong>Discord<br></strong></span>
+            Вступи в наш <a href="https://discord.gg/sjkxZuUqT3" target="_blank" rel="noopener noreferrer">Discord-сервер</a> и пройди экран приветствия. После этого запусти игру и заходи по IP <strong style="color:var(--amber-b)">play.pandacraft.fun</strong>. Появится сообщение для верификации с кодом, запомни его. Затем перейди в канал #корзина в сервере и введи команду /verify <твой полученный код> от бота PandaCraft. После успешной верификации ты сможешь свободно играть на сервере и общаться в Discord!
+            <br><br>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--tg); vertical-align:middle;" aria-hidden="true">
+              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+            </svg>
+            <span style="color:var(--tg)"><strong>Telegram<br></strong></span>
+            Вступи в наш <a href="https://t.me/pandacraftmc" target="_blank" rel="noopener noreferrer">Telegram-канал</a>, подпишись и зайди в сообщения каналу. После этого запусти игру и заходи по IP <strong style="color:var(--amber-b)">play.pandacraft.fun</strong>. Появится сообщение для верификации с кодом, запомни его. Затем перейди в чат с каналом и отправь свой полученный код. После успешной верификации ты сможешь свободно играть на сервере и следить за новостями в Telegram!
           </div>
         </div>
       </div>
 
       <div class="faq-item reveal d2">
         <div class="faq-hd" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)">
-          Какой лаунчер использовать?
+          У меня в лаунчере нет модовых загрузчиков. Что делать? Какой лаунчер использовать?
           <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-body">
           <div class="faq-body-inner">
-            Рекомендуем <strong style="color:var(--tx-white)">Prism Launcher</strong> — он бесплатен, поддерживает NeoForge и позволяет легко импортировать наш модпак. Также подойдут ATLauncher и CurseForge App.
+            Вообще не проблема! Установить его можно в несколько кликов. Для начала, скачай установщик NeoForge 1.21.1 <a href="https://neoforged.net/" target="_blank" rel="noopener noreferrer">с официального сайта</a>. Запусти его, выбери версию 1.21.1 и нажми «Установить». После этого в твоём лаунчере появится возможность создавать профили с поддержкой NeoForge.
+            <br>
+            Если всё же хочешь поменять лаунчер, рекомендуем <strong style="color:var(--tx-white)">Legacy Launcher</strong> — он бесплатен, поддерживает NeoForge и позволяет легко импортировать наш модпак. Также подойдут Prism Launcher и Modrinth App.
           </div>
         </div>
       </div>
@@ -1627,7 +1653,7 @@ button { font-family: var(--font); cursor: pointer; }
         </div>
         <div class="faq-body">
           <div class="faq-body-inner">
-            Да, наш сервер работает только в режиме online-mode (premium). Для подключения необходима лицензионная учётная запись Microsoft / Mojang.
+            Нет, лицензия не требуется. Можно подключаться без учётной записи Microsoft / Mojang.
           </div>
         </div>
       </div>
@@ -1639,7 +1665,7 @@ button { font-family: var(--font); cursor: pointer; }
         </div>
         <div class="faq-body">
           <div class="faq-body-inner">
-            Модпак технический и содержит множество модов — рекомендуем минимум 8 ГБ оперативной памяти и выделить Java не менее 4–6 ГБ. Установи оптимизационные моды Sodium и Iris (уже включены в сборку) для улучшения производительности.
+            Модпак технический и содержит множество модов, но уже оптимизирован: в сборке есть Sodium и другие моды для производительности, чтобы всё работало плавнее. Рекомендуем минимум 8 ГБ оперативной памяти и выделить Java не менее 4–6 ГБ.
           </div>
         </div>
       </div>
@@ -1651,7 +1677,15 @@ button { font-family: var(--font); cursor: pointer; }
         </div>
         <div class="faq-body">
           <div class="faq-body-inner">
-            Используй команду <strong style="color:var(--amber-b)">/report [ник] [причина]</strong> прямо в игре, либо создай тикет в нашем <a href="https://discord.gg/sjkxZuUqT3" target="_blank" rel="noopener noreferrer">Discord-сервере</a>. Администрация рассматривает все обращения.
+            <svg width="18" height="18" viewBox="0 0 127.14 96.36" fill="currentColor" style="color:var(--disc); vertical-align:middle;" aria-hidden="true">
+              <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+            </svg>
+            <span style="color:var(--disc)"><strong>Discord:</strong></span> Сообщи о нарушителе в обращении <a href="https://discord.com/channels/773430397903568936/1348308650682486824" style="color:var(--tx-primary); text-decoration-color:var(--tx-primary);"><span style="color:var(--tx-primary)">через канал #поддержка</span></a><br>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--tg); vertical-align:middle;" aria-hidden="true">
+              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+            </svg>
+            <span style="color:var(--tg)"><strong>Telegram:</strong></span> Сообщи о нарушителе в <a href="https://t.me/pandacraftmc?direct" style="color:var(--tx-primary); text-decoration-color:var(--tx-primary);"><span style="color:var(--tx-primary)">чате с каналом</span></a><br><br>
+            Укажи ник нарушителя, суть проблемы и приложи скриншоты или видео для доказательства. Администрация рассмотрит твоё обращение и примет меры в соответствии с правилами сервера.
           </div>
         </div>
       </div>
@@ -1664,6 +1698,42 @@ button { font-family: var(--font); cursor: pointer; }
         <div class="faq-body">
           <div class="faq-body-inner">
             Вайп проводится только при смене основной версии модпака и заблаговременно анонсируется в Discord. Следи за каналом объявлений, чтобы быть в курсе.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal d2">
+        <div class="faq-hd" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)">
+          Как авторизоваться на сервере?
+          <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            На нашем сервере удобная система авторизации: при первом входе в Minecraft ты увидишь табличку с предложением задать пароль. Придумай свой или разреши системе сгенерировать случайный. После этого при каждом последующем заходе авторизация проходит автоматически — вводить пароль вручную не нужно. Это быстро, удобно и безопасно; твой пароль никому не передаётся.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal d2">
+        <div class="faq-hd" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)">
+          Я забыл пароль на сервере, что делать?
+          <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            <svg width="18" height="18" viewBox="0 0 127.14 96.36" fill="currentColor" style="color:var(--disc); vertical-align:middle;" aria-hidden="true">
+              <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+            </svg>
+            <span style="color:var(--disc)"><strong>Discord</strong></span><br>
+            Не переживай, это легко исправить! Просто обратись в <a href="https://discord.com/channels/773430397903568936/1348308650682486824" style="color:var(--tx-primary); text-decoration-color:var(--tx-primary);"><span style="color:var(--tx-primary)">канал #поддержка</span></a>. Укажи свой ник и сообщи, что забыл пароль. Администрация поможет тебе сбросить пароль и восстановить доступ к аккаунту на сервере.
+            <br><br>
+            
+            
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--tg); vertical-align:middle;" aria-hidden="true">
+              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+            </svg>
+            <span style="color:var(--tg)"><strong>Telegram<br></strong></span>
+            Перейди в наш <a href="https://t.me/pandacraftmc" target="_blank" rel="noopener noreferrer">Telegram-канал</a> и отправь сообщение каналу с описанием проблемы и ником нарушителя. Укажи суть проблемы и приложи скриншоты или видео для доказательства. Администрация рассмотрит твоё обращение и примет меры в соответствии с правилами сервера.
           </div>
         </div>
       </div>
@@ -1681,7 +1751,7 @@ button { font-family: var(--font); cursor: pointer; }
   <div class="container">
     <div class="footer-inner">
       <div class="footer-logo logo-gapfix">Panda<span id="footer-logo-accent">Craft</span></div>
-      <div class="footer-copy">PandaCraft 2022–2026. Все права защищены.</div>
+      <div class="footer-copy">© PandaCraft 2022–2026. Все права защищены.</div>
       <div class="footer-disc">
         Не связан с Mojang Studios.<br>
         Minecraft — торговая марка Mojang AB.
